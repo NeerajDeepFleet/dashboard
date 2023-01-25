@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Axios from "axios";
+import { useDispatch, useSelector } from 'react-redux';
+import { sideList } from '../redux/action/action';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
@@ -7,18 +9,26 @@ ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 
 
+
 export default function Portfolio() {
-  const [data, setData] = useState();
+
+  const dispatch = useDispatch();
+  //const [data, setData] = useState();
   const [label, setLabel] = useState([]);
   const [marketCap, setMarketCap] = useState([]);
   const [loaded, setLoaded] = useState(false)
+  const array = useSelector((state) => state.sidelist);
+  const data = array.coin
+
 
   useEffect(() => {
 
+
+
+    dispatch(sideList());
     pieChartData()
 
-  }, [loaded]);
-
+  }, [loaded, data]);
 
 
 
@@ -26,11 +36,12 @@ export default function Portfolio() {
 
   const pieChartData = async () => {
 
-    const res = await Axios.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=INR&order=market_cap_desc&per_page=100&page=1&sparkline=false")
-    if (res) {
-      setLoaded(true)
-    }
-    setData(res.data);
+    // const res = await Axios.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=INR&order=market_cap_desc&per_page=100&page=1&sparkline=false")
+    // if (res) {
+    //   setLoaded(true)
+    // }
+    // setData(res.data);
+    // console.log(res.data)
 
     var labelArray = [];
     var marketCapArray = [];

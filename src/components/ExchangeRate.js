@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Axios from "axios";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCoinList } from '../redux/action/action';
 
 
 const Dropdown = ({ label, value, options, onChange }) => {
@@ -20,19 +22,30 @@ const Dropdown = ({ label, value, options, onChange }) => {
 
 export default function ExchangeRate() {
 
-  const [data, setData] = useState();
+  const dispatch = useDispatch();
+
+  //const [data, setData] = useState();
   const [coinOne, setCoinOne] = useState("btc");
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    Axios.get("https://api.coingecko.com/api/v3/exchange_rates").then((res) => {
-      setData(res.data.rates);
-      if (res) {
-        setLoaded(true)
-      }
-    });
+    // Axios.get("https://api.coingecko.com/api/v3/exchange_rates").then((res) => {
+    //   setData(res.data.rates);
+    //   console.log(res.data.rates)
+    //   if (res) {
+    //     setLoaded(true)
+    //   }
+    // });
+
+    dispatch(fetchCoinList());
+
 
   }, []);
+
+  const exchangeData = useSelector((state) => state.exchange);
+  //console.log(exchangeData.coinList)
+  let data = exchangeData.coinList
+
 
   const [coinTwo, setCoinTwo] = useState("inr");
   const [coinOneAmount, setCoinOneAmount] = useState(0);
@@ -88,7 +101,7 @@ export default function ExchangeRate() {
 
   useEffect(() => {
     dropDownData()
-  }, [loaded]);
+  }, [loaded, data]);
 
 
   const dropDownData = () => {
@@ -111,7 +124,7 @@ export default function ExchangeRate() {
     <div>
 
       <div>
-        <h1> Exchange Coins </h1>
+        <h1> Exchange Rate </h1>
         <div>selling Currency </div>
         <div>
           <Dropdown
