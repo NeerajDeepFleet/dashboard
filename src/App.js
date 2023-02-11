@@ -8,7 +8,7 @@ import CurrencyDropdown from "./components/CurrencyDropdown";
 function App() {
   return (
     <div >
-      Almabetter Project
+      I am Hargobinda
       <ExchangeRate />
       <Portfolio />
       <Sidebar />
